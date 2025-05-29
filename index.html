@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TechTrend Innovations - Your one-stop shop for electronics components and project kits">
+    <meta name="keywords" content="electronics, components, project kits, microcontrollers, sensors, robotics, IoT, automation">
+    <meta name="author" content="TechTrend Innovations">
+    <title>TechTrend Innovations</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(45deg, #1a202c, #2d3748);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            color: #e2e8f0;
+            font-family: 'Arial', sans-serif;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body.light-theme {
+            background: linear-gradient(45deg, #f7fafc, #edf2f7);
+            color: #2d3748;
+        }
+        .light-theme .bg-gray-800 { background-color: #edf2f7; }
+        .light-theme .bg-gray-700 { background-color: #e2e8f0; }
+        .light-theme .text-gray-300 { color: #4a5568; }
+        .light-theme .bg-gray-900 { background-color: #2d3748; }
+        .light-theme .text-gray-400 { color: #718096; }
+        .image-wrapper { height: 200px; overflow: hidden; position: relative; }
+        .product-image { transition: transform 0.3s ease; }
+        .product-card:hover .product-image { transform: scale(1.1); }
+        .search-bar input {
+            transition: width 0.5s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .search-bar input.active { width: 300px; opacity: 1; }
+        .autocomplete-suggestions {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #2d3748;
+            border-radius: 0 0 8px 8px;
+            z-index: 50;
+            max-height: 200px;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+        .light-theme .autocomplete-suggestions { background: #e2e8f0; }
+        .autocomplete-suggestions.active { display: block; }
+        .suggestion-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .suggestion-item:hover { background: #4a5568; }
+        .light-theme .suggestion-item:hover { background: #cbd5e0; }
+        .highlight { color: #63b3ed; font-weight: bold; }
+        .quantity-btn {
+            background: #4a5568;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .quantity-btn:hover { background: #718096; transform: scale(1.1); }
+        .wishlist-btn.active .heart-icon {
+            fill: #e53e3e;
+            stroke: #e53e3e;
+            animation: heartbeat 0.5s ease;
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .nav-icon { transition: transform 0.3s ease; }
+        .nav-icon:hover { transform: scale(1.2); }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .modal { animation: slideIn 0.3s ease; }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .btn { transition: background 0.3s ease, transform 0.2s ease; }
+        .btn:hover { transform: scale(1.05); }
+        .ai-chat-icon { animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .ai-chat-window {
+            background: linear-gradient(145deg, #2d3748, #1a202c);
+            border: 1px solid #4a5568;
+        }
+        .light-theme .ai-chat-window {
+            background: linear-gradient(145deg, #e2e8f0, #edf2f7);
+            border: 1px solid #cbd5e0;
+        }
+        .quick-view {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .product-card:hover .quick-view { opacity: 1; }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4a5568;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            display: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .back-to-top:hover { background: #718096; transform: scale(1.1); }
+        .compare-btn.active { background: #e53e3e; }
+        .compare-modal { max-width: 80%; }
+        .category-filter.active { background: #63b3ed; }
+        .stock-low { color: #f59e0b; }
+        .stock-out { color: #ef4444; }
+        .discount-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ef4444;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .rating-stars { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-gray-800 py-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white animate-hero">TechTrend Innovations</h1>
+            <div id="nav-links" class="flex space-x-4">
+                <a href="#home" class="text-white hover:text-blue-300">Home</a>
+                <a href="#deals" class="text-white hover:text-blue-300">Deals</a>
+                <a href="#components" class="text-white hover:text-blue-300">Components</a>
+                <a href="#kits" class="text-white hover:text-blue-300">Project Kits</a>
+                <a href="#videos" class="text-white hover:text-blue-300">Videos</a>
+                <a href="#about" class="text-white hover:text-blue-300">About</a>
+            </div>
+            <div class="flex space-x-4 items-center">
+                <div class="relative search-bar">
+                    <button id="search-btn" class="text-white hover:text-blue-300 nav-icon" aria-expanded="false" aria-label="Toggle Search">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <input type="text" id="search-input" placeholder="Search products..." class="w-0 p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Search Products">
+                    <button id="voice-search-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white" aria-label="Voice Search (Not Available)" disabled title="Voice Search is not available in this demo">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-7a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                        </svg>
+                    </button>
+                    <div id="autocomplete-suggestions" class="autocomplete-suggestions" role="listbox" aria-label="Search Suggestions"></div>
+                </div>
+                <button id="cart-btn" class="text-white hover:text-blue-300 relative nav-icon" aria-label="View Cart">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                </button>
+                <button id="wishlist-btn" class="text-white hover:text-blue-300 relative nav-icon" aria-label="View Wishlist">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                    <span id="wishlist-count" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                </button>
+                <button id="user-btn" class="text-white hover:text-blue-300 nav-icon" aria-label="User Login">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span id="user-status" class="ml-1">Login</span>
+                </button>
+                <button id="theme-toggle" class="text-white hover:text-blue-300 nav-icon" aria-label="Toggle Theme">
+                    <span id="theme-icon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="py-20 bg-gray-800">
+        <div class="container mx-auto text-center">
+            <h2 class="text-5xl font-bold mb-4 animate-hero">Welcome to TechTrend Innovations</h2>
+            <p class="text-xl mb-8 animate-hero">Your one-stop shop for electronics components and project kits.</p>
+            <a href="#components" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full text-lg animate-hero btn">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Deals of the Day Section -->
+    <section id="deals" class="py-16">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-8 animate-section">Deals of the Day</h2>
+            <div id="deals-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card relative" data-name="Arduino Uno Deal" data-price="20.00" data-original-price="25.00" data-description="A popular microcontroller board for beginners and professionals." data-image="https://via.placeholder.com/200?text=Arduino+Uno" data-category="Microcontroller" data-rating="4.5" data-stock="10" data-brand="Arduino">
+                    <div class="discount-tag">20% OFF</div>
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Arduino+Uno" alt="Arduino Uno" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Arduino Uno</h3>
+                    <p class="text-gray-300 mb-2 product-description">A popular microcontroller board for beginners and professionals.</p>
+                    <p class="text-sm text-gray-400">Brand: Arduino</p>
+                    <p class="text-sm stock-low">In Stock: 10</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.5)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$20.00 <span class="line-through text-gray-400 text-sm">$25.00</span></p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Arduino Uno">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Arduino Uno Deal" data-price="20.00" aria-label="Add Arduino Uno to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Arduino Uno Deal" aria-label="Add Arduino Uno to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Arduino Uno Deal" aria-label="Compare Arduino Uno">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card relative" data-name="Smart Home IoT Kit Deal" data-price="48.00" data-original-price="60.00" data-description="Build a smart home system with sensors and Wi-Fi connectivity." data-image="https://via.placeholder.com/200?text=Smart+Home+IoT+Kit" data-category="IoT" data-rating="4.8" data-stock="5" data-brand="TechTrend">
+                    <div class="discount-tag">20% OFF</div>
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Smart+Home+IoT+Kit" alt="Smart Home IoT Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Smart Home IoT Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Build a smart home system with sensors and Wi-Fi connectivity.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 5</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.8)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$48.00 <span class="line-through text-gray-400 text-sm">$60.00</span></p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Smart Home IoT Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Smart Home IoT Kit Deal" data-price="48.00" aria-label="Add Smart Home IoT Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Smart Home IoT Kit Deal" aria-label="Add Smart Home IoT Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Smart Home IoT Kit Deal" aria-label="Compare Smart Home IoT Kit">Compare</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recently Viewed Section -->
+    <section id="recently-viewed" class="py-16 hidden">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-8 animate-section">Recently Viewed</h2>
+            <div id="recently-viewed-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Components Section -->
+    <section id="components" class="py-16">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-8 animate-section">Components</h2>
+            <div class="flex flex-wrap justify-between mb-8">
+                <div class="flex space-x-4 mb-4">
+                    <select id="category-filter-components" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="Microcontroller">Microcontrollers</option>
+                        <option value="Sensor">Sensors</option>
+                        <option value="Motor">Motors</option>
+                    </select>
+                    <select id="sort-components" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                        <option value="rating-desc">Rating: High to Low</option>
+                    </select>
+                    <select id="brand-filter-components" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All Brands</option>
+                        <option value="Arduino">Arduino</option>
+                        <option value="TechTrend">TechTrend</option>
+                    </select>
+                </div>
+                <div class="flex space-x-4">
+                    <input type="number" id="price-min-components" placeholder="Min Price" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32">
+                    <input type="number" id="price-max-components" placeholder="Max Price" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32">
+                    <select id="stock-filter-components" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All Stock</option>
+                        <option value="in-stock">In Stock</option>
+                        <option value="low-stock">Low Stock</option>
+                    </select>
+                </div>
+            </div>
+            <div id="components-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Arduino Uno" data-price="25.00" data-description="A popular microcontroller board for beginners and professionals." data-image="https://via.placeholder.com/200?text=Arduino+Uno" data-category="Microcontroller" data-rating="4.5" data-stock="10" data-brand="Arduino">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Arduino+Uno" alt="Arduino Uno" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Arduino Uno</h3>
+                    <p class="text-gray-300 mb-2 product-description">A popular microcontroller board for beginners and professionals.</p>
+                    <p class="text-sm text-gray-400">Brand: Arduino</p>
+                    <p class="text-sm stock-low">In Stock: 10</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.5)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$25.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Arduino Uno">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Arduino Uno" data-price="25.00" aria-label="Add Arduino Uno to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Arduino Uno" aria-label="Add Arduino Uno to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Arduino Uno" aria-label="Compare Arduino Uno">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Raspberry Pi 4" data-price="35.00" data-description="A powerful single-board computer for advanced projects." data-image="https://via.placeholder.com/200?text=Raspberry+Pi+4" data-category="Microcontroller" data-rating="4.7" data-stock="8" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Raspberry+Pi+4" alt="Raspberry Pi 4" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Raspberry Pi 4</h3>
+                    <p class="text-gray-300 mb-2 product-description">A powerful single-board computer for advanced projects.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 8</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.7)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$35.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Raspberry Pi 4">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Raspberry Pi 4" data-price="35.00" aria-label="Add Raspberry Pi 4 to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Raspberry Pi 4" aria-label="Add Raspberry Pi 4 to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Raspberry Pi 4" aria-label="Compare Raspberry Pi 4">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Ultrasonic Sensor" data-price="5.00" data-description="Measure distance with this ultrasonic sensor module." data-image="https://via.placeholder.com/200?text=Ultrasonic+Sensor" data-category="Sensor" data-rating="4.2" data-stock="15" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Ultrasonic+Sensor" alt="Ultrasonic Sensor" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Ultrasonic Sensor</h3>
+                    <p class="text-gray-300 mb-2 product-description">Measure distance with this ultrasonic sensor module.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm">In Stock: 15</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span class="ml-2 text-sm">(4.2)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$5.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Ultrasonic Sensor">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Ultrasonic Sensor" data-price="5.00" aria-label="Add Ultrasonic Sensor to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Ultrasonic Sensor" aria-label="Add Ultrasonic Sensor to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Ultrasonic Sensor" aria-label="Compare Ultrasonic Sensor">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Temperature Sensor" data-price="3.00" data-description="Monitor temperature with this compact sensor." data-image="https://via.placeholder.com/200?text=Temperature+Sensor" data-category="Sensor" data-rating="4.0" data-stock="20" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Temperature+Sensor" alt="Temperature Sensor" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Temperature Sensor</h3>
+                    <p class="text-gray-300 mb-2 product-description">Monitor temperature with this compact sensor.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm">In Stock: 20</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span class="ml-2 text-sm">(4.0)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$3.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Temperature Sensor">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Temperature Sensor" data-price="3.00" aria-label="Add Temperature Sensor to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Temperature Sensor" aria-label="Add Temperature Sensor to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Temperature Sensor" aria-label="Compare Temperature Sensor">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="DC Motor" data-price="8.00" data-description="A high-torque DC motor for robotics projects." data-image="https://via.placeholder.com/200?text=DC+Motor" data-category="Motor" data-rating="4.3" data-stock="0" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=DC+Motor" alt="DC Motor" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">DC Motor</h3>
+                    <p class="text-gray-300 mb-2 product-description">A high-torque DC motor for robotics projects.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-out">Out of Stock</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span class="ml-2 text-sm">(4.3)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$8.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for DC Motor">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="DC Motor" data-price="8.00" aria-label="Add DC Motor to Cart" disabled>Out of Stock</button>
+                        <button class="wishlist-btn" data-name="DC Motor" aria-label="Add DC Motor to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="DC Motor" aria-label="Compare DC Motor">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Servo Motor" data-price="10.00" data-description="A precise servo motor for automation projects." data-image="https://via.placeholder.com/200?text=Servo+Motor" data-category="Motor" data-rating="4.4" data-stock="12" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Servo+Motor" alt="Servo Motor" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Servo Motor</h3>
+                    <p class="text-gray-300 mb-2 product-description">A precise servo motor for automation projects.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm">In Stock: 12</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span class="ml-2 text-sm">(4.4)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$10.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Servo Motor">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Servo Motor" data-price="10.00" aria-label="Add Servo Motor to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Servo Motor" aria-label="Add Servo Motor to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Servo Motor" aria-label="Compare Servo Motor">Compare</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Kits Section -->
+    <section id="kits" class="py-16">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-8 animate-section">Project Kits</h2>
+            <div class="flex flex-wrap justify-between mb-8">
+                <div class="flex space-x-4 mb-4">
+                    <select id="category-filter-kits" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="Robotics">Robotics</option>
+                        <option value="IoT">IoT</option>
+                        <option value="Automation">Automation</option>
+                    </select>
+                    <select id="sort-kits" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                        <option value="rating-desc">Rating: High to Low</option>
+                    </select>
+                    <select id="brand-filter-kits" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All Brands</option>
+                        <option value="TechTrend">TechTrend</option>
+                    </select>
+                </div>
+                <div class="flex space-x-4">
+                    <input type="number" id="price-min-kits" placeholder="Min Price" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32">
+                    <input type="number" id="price-max-kits" placeholder="Max Price" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32">
+                    <select id="stock-filter-kits" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All Stock</option>
+                        <option value="in-stock">In Stock</option>
+                        <option value="low-stock">Low Stock</option>
+                    </select>
+                </div>
+            </div>
+            <div id="kits-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Robotics Starter Kit" data-price="50.00" data-description="Everything you need to build your first robot, including motors, sensors, and a microcontroller." data-image="https://via.placeholder.com/200?text=Robotics+Starter+Kit" data-category="Robotics" data-rating="4.6" data-stock="7" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Robotics+Starter+Kit" alt="Robotics Starter Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Robotics Starter Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Everything you need to build your first robot, including motors, sensors, and a microcontroller.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 7</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.6)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$50.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Robotics Starter Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Robotics Starter Kit" data-price="50.00" aria-label="Add Robotics Starter Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Robotics Starter Kit" aria-label="Add Robotics Starter Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Robotics Starter Kit" aria-label="Compare Robotics Starter Kit">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Line Following Robot Kit" data-price="35.00" data-description="Build a robot that follows a line using IR sensors and motors." data-image="https://via.placeholder.com/200?text=Line+Following+Robot+Kit" data-category="Robotics" data-rating="4.3" data-stock="9" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Line+Following+Robot+Kit" alt="Line Following Robot Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Line Following Robot Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Build a robot that follows a line using IR sensors and motors.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 9</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span class="ml-2 text-sm">(4.3)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$35.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Line Following Robot Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Line Following Robot Kit" data-price="35.00" aria-label="Add Line Following Robot Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Line Following Robot Kit" aria-label="Add Line Following Robot Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Line Following Robot Kit" aria-label="Compare Line Following Robot Kit">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Obstacle Avoidance Robot Kit" data-price="40.00" data-description="Create a robot that avoids obstacles using ultrasonic sensors." data-image="https://via.placeholder.com/200?text=Obstacle+Avoidance+Robot+Kit" data-category="Robotics" data-rating="4.5" data-stock="6" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Obstacle+Avoidance+Robot+Kit" alt="Obstacle Avoidance Robot Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Obstacle Avoidance Robot Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Create a robot that avoids obstacles using ultrasonic sensors.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 6</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.5)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$40.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Obstacle Avoidance Robot Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Obstacle Avoidance Robot Kit" data-price="40.00" aria-label="Add Obstacle Avoidance Robot Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Obstacle Avoidance Robot Kit" aria-label="Add Obstacle Avoidance Robot Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Obstacle Avoidance Robot Kit" aria-label="Compare Obstacle Avoidance Robot Kit">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Smart Home IoT Kit" data-price="60.00" data-description="Build a smart home system with sensors and Wi-Fi connectivity." data-image="https://via.placeholder.com/200?text=Smart+Home+IoT+Kit" data-category="IoT" data-rating="4.8" data-stock="5" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Smart+Home+IoT+Kit" alt="Smart Home IoT Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Smart Home IoT Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Build a smart home system with sensors and Wi-Fi connectivity.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 5</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.8)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$60.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Smart Home IoT Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Smart Home IoT Kit" data-price="60.00" aria-label="Add Smart Home IoT Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Smart Home IoT Kit" aria-label="Add Smart Home IoT Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Smart Home IoT Kit" aria-label="Compare Smart Home IoT Kit">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Weather Station IoT Kit" data-price="45.00" data-description="Monitor weather conditions with sensors and cloud connectivity." data-image="https://via.placeholder.com/200?text=Weather+Station+IoT+Kit" data-category="IoT" data-rating="4.4" data-stock="8" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Weather+Station+IoT+Kit" alt="Weather Station IoT Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Weather Station IoT Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Monitor weather conditions with sensors and cloud connectivity.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 8</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span class="ml-2 text-sm">(4.4)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$45.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Weather Station IoT Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Weather Station IoT Kit" data-price="45.00" aria-label="Add Weather Station IoT Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Weather Station IoT Kit" aria-label="Add Weather Station IoT Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Weather Station IoT Kit" aria-label="Compare Weather Station IoT Kit">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="IoT Security Kit" data-price="55.00" data-description="Secure your space with IoT-enabled sensors and notifications." data-image="https://via.placeholder.com/200?text=IoT+Security+Kit" data-category="IoT" data-rating="4.7" data-stock="4" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=IoT+Security+Kit" alt="IoT Security Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">IoT Security Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Secure your space with IoT-enabled sensors and notifications.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 4</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.7)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$55.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for IoT Security Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="IoT Security Kit" data-price="55.00" aria-label="Add IoT Security Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="IoT Security Kit" aria-label="Add IoT Security Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="IoT Security Kit" aria-label="Compare IoT Security Kit">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Home Automation Kit" data-price="70.00" data-description="Automate your home with relays, sensors, and a microcontroller." data-image="https://via.placeholder.com/200?text=Home+Automation+Kit" data-category="Automation" data-rating="4.9" data-stock="3" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Home+Automation+Kit" alt="Home Automation Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Home Automation Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Automate your home with relays, sensors, and a microcontroller.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm stock-low">In Stock: 3</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="ml-2 text-sm">(4.9)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$70.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Home Automation Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Home Automation Kit" data-price="70.00" aria-label="Add Home Automation Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Home Automation Kit" aria-label="Add Home Automation Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Home Automation Kit" aria-label="Compare Home Automation Kit">Compare</button>
+                    </div>
+                </div>
+                <div class="product-card bg-gray-700 p-6 rounded-lg shadow-lg animate-card" data-name="Smart Lighting Kit" data-price="30.00" data-description="Control lighting with sensors and a microcontroller." data-image="https://via.placeholder.com/200?text=Smart+Lighting+Kit" data-category="Automation" data-rating="4.2" data-stock="10" data-brand="TechTrend">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Smart+Lighting+Kit" alt="Smart Lighting Kit" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">Smart Lighting Kit</h3>
+                    <p class="text-gray-300 mb-2 product-description">Control lighting with sensors and a microcontroller.</p>
+                    <p class="text-sm text-gray-400">Brand: TechTrend</p>
+                    <p class="text-sm">In Stock: 10</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span class="ml-2 text-sm">(4.2)</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$30.00</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for Smart Lighting Kit">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="Smart Lighting Kit" data-price="30.00" aria-label="Add Smart Lighting Kit to Cart">Add to Cart</button>
+                        <button class="wishlist-btn" data-name="Smart Lighting Kit" aria-label="Add Smart Lighting Kit to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </button>
+                    <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="Smart Lighting Kit" aria-label="Compare Smart Lighting Kit">Compare</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos" class="py-16 bg-gray-800">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-8 animate-section">Tutorials & Demos</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg animate-card">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Video+1" alt="Tutorial Video 1" class="w-full h-full object-cover rounded-md" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4">Getting Started with Arduino</h3>
+                    <p class="text-gray-300 mb-4">Learn the basics of using an Arduino Uno with this beginner-friendly tutorial.</p>
+                    <button class="watch-video bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-video="Arduino Tutorial" aria-label="Watch Arduino Tutorial">Watch Now</button>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg animate-card">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Video+2" alt="Tutorial Video 2" class="w-full h-full object-cover rounded-md" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4">Building a Smart Home with IoT</h3>
+                    <p class="text-gray-300 mb-4">Step-by-step guide to creating a smart home system using our IoT kits.</p>
+                    <button class="watch-video bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-video="Smart Home IoT" aria-label="Watch Smart Home IoT Tutorial">Watch Now</button>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg animate-card">
+                    <div class="image-wrapper w-full">
+                        <img src="https://via.placeholder.com/200?text=Video+3" alt="Tutorial Video 3" class="w-full h-full object-cover rounded-md" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4">Robotics Basics</h3>
+                    <p class="text-gray-300 mb-4">Introduction to robotics with our Robotics Starter Kit.</p>
+                    <button class="watch-video bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-video="Robotics Basics" aria-label="Watch Robotics Basics Tutorial">Watch Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8 animate-section">About Us</h2>
+            <p class="text-lg mb-4">TechTrend Innovations is dedicated to empowering creators, hobbyists, and professionals with high-quality electronics components and project kits. Our mission is to make technology accessible and fun for everyone.</p>
+            <p class="text-lg mb-4">We offer free shipping on orders over $50 and a 30-day return policy. Contact us at support@techtrend.com for any inquiries.</p>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section id="newsletter" class="py-16 bg-gray-800">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8 animate-section">Subscribe to Our Newsletter</h2>
+            <p class="text-lg mb-4">Stay updated with the latest products, tutorials, and exclusive offers!</p>
+            <form id="newsletter-form" class="flex justify-center space-x-4">
+                <input type="email" id="newsletter-email" placeholder="Enter your email" class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64" aria-label="Email for Newsletter" required>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded btn" aria-label="Subscribe to Newsletter">Subscribe</button>
+            </form>
+            <p id="newsletter-message" class="mt-4 text-green-400 hidden">Thank you for subscribing!</p>
+        </div>
+    </section>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="bg-gray-800 p-6 rounded-lg max-w-lg w-full relative">
+            <button id="close-modal" class="absolute top-2 right-2 text-gray-400 hover:text-white btn" aria-label="Close Product Modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <img id="modal-image" src="" alt="Product Image" class="w-full h-48 object-cover rounded-md mb-4">
+            <h3 id="modal-name" class="text-2xl font-bold mb-2"></h3>
+            <p id="modal-description" class="text-gray-300 mb-4"></p>
+            <p class="text-sm text-gray-400 mb-2">Brand: <span id="modal-brand"></span></p>
+            <p id="modal-stock" class="text-sm mb-2"></p>
+            <div class="flex items-center mb-2">
+                <span id="modal-rating" class="rating-stars"></span>
+                <span id="modal-rating-value" class="ml-2 text-sm"></span>
+            </div>
+            <p id="modal-price" class="text-lg font-bold mb-4"></p>
+            <div class="flex items-center mb-4">
+                <button id="decrease-quantity" class="quantity-btn">-</button>
+                <span id="modal-quantity" class="mx-4">1</span>
+                <button id="increase-quantity" class="quantity-btn">+</button>
+            </div>
+            <button id="modal-add-to-cart" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full mb-4 btn" aria-label="Add Product to Cart">Add to Cart</button>
+            <div id="reviews-section">
+                <h4 class="text-lg font-semibold mb-2">Customer Reviews</h4>
+                <div id="reviews-list" class="max-h-32 overflow-y-auto mb-4"></div>
+                <div id="add-review" class="flex flex-col space-y-2">
+                    <div class="flex items-center">
+                        <span class="mr-2">Rate:</span>
+                        <div id="star-rating" class="flex">
+                            <span class="star cursor-pointer" data-value="1">★</span>
+                            <span class="star cursor-pointer" data-value="2">★</span>
+                            <span class="star cursor-pointer" data-value="3">★</span>
+                            <span class="star cursor-pointer" data-value="4">★</span>
+                            <span class="star cursor-pointer" data-value="5">★</span>
+                        </div>
+                    </div>
+                    <textarea id="review-text" placeholder="Write your review..." class="p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" aria-label="Write a Review"></textarea>
+                    <button id="submit-review" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="Submit Review">Submit Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="bg-gray-800 p-6 rounded-lg max-w-lg w-full relative">
+            <button id="close-cart-modal" class="absolute top-2 right-2 text-gray-400 hover:text-white btn" aria-label="Close Cart Modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <h3 class="text-2xl font-bold mb-4">Your Cart</h3>
+            <div id="cart-items" class="max-h-64 overflow-y-auto mb-4"></div>
+            <p id="cart-total" class="text-lg font-bold mb-4">Total: $0.00</p>
+            <button id="checkout-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="Proceed to Checkout">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlist-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="bg-gray-800 p-6 rounded-lg max-w-lg w-full relative">
+            <button id="close-wishlist-modal" class="absolute top-2 right-2 text-gray-400 hover:text-white btn" aria-label="Close Wishlist Modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <h3 class="text-2xl font-bold mb-4">Your Wishlist</h3>
+            <div id="wishlist-items" class="max-h-64 overflow-y-auto mb-4"></div>
+            <button id="share-wishlist" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" aria-label="Share Wishlist">Share Wishlist</button>
+        </div>
+    </div>
+
+    <!-- Compare Modal -->
+    <div id="compare-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal compare-modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="bg-gray-800 p-6 rounded-lg w-full relative overflow-x-auto">
+            <button id="close-compare-modal" class="absolute top-2 right-2 text-gray-400 hover:text-white btn" aria-label="Close Compare Modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <h3 class="text-2xl font-bold mb-4">Compare Products</h3>
+            <div id="compare-table" class="flex space-x-4"></div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="bg-gray-800 p-6 rounded-lg max-w-2xl w-full relative">
+            <button id="close-video-modal" class="absolute top-2 right-2 text-gray-400 hover:text-white btn" aria-label="Close Video Modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <h3 id="video-title" class="text-2xl font-bold mb-4"></h3>
+            <div class="w-full h-64 bg-gray-700 rounded-md flex items-center justify-center">
+                <p class="text-gray-300">Video Player Placeholder: <span id="video-placeholder"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chatbot -->
+    <button id="ai-chat-icon" class="fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-full shadow-lg z-50 ai-chat-icon" aria-label="Open AI Chat">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+        </svg>
+    </button>
+    <div id="ai-chat-window" class="fixed bottom-16 right-4 bg-gray-800 p-4 rounded-lg shadow-lg w-80 hidden ai-chat-window" role="dialog" aria-label="AI Chat Window">
+        <button id="close-ai-chat" class="absolute top-2 right-2 text-gray-400 hover:text-white btn" aria-label="Close AI Chat">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <h3 class="text-xl font-bold mb-2">AI Assistant</h3>
+        <div id="ai-chat-messages" class="max-h-64 overflow-y-auto mb-4 text-gray-300"></div>
+        <form id="ai-chat-form" class="flex space-x-2">
+            <input type="text" id="ai-chat-input" placeholder="Ask me anything..." class="flex-grow p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Chat Input">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded btn" aria-label="Send Message">Send</button>
+        </form>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to Top">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
+    <script>
+        // GSAP Animations for Sections
+        gsap.utils.toArray('section').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 1
+            });
+        });
+
+        gsap.utils.toArray('.animate-hero').forEach((element, index) => {
+            gsap.from(element, {
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                delay: index * 0.2
+            });
+        });
+
+        gsap.utils.toArray('.animate-card').forEach((card, index) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 90%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 0,
+                scale: 0.9,
+                duration: 0.5,
+                delay: index * 0.1
+            });
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            themeIcon.innerHTML = isLight ?
+                `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>` :
+                `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Load theme preference
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-theme');
+            themeIcon.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
+        }
+
+        // User Login Simulation
+        const userBtn = document.getElementById('user-btn');
+        const userStatus = document.getElementById('user-status');
+        let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')) || false;
+        let userPoints = JSON.parse(localStorage.getItem('userPoints')) || 0;
+
+        function updateUserStatus() {
+            userStatus.textContent = isLoggedIn ? 'Logout' : 'Login';
+            if (isLoggedIn) {
+                userBtn.setAttribute('aria-label', 'Logout');
+            } else {
+                userBtn.setAttribute('aria-label', 'User Login');
+            }
+        }
+
+        userBtn.addEventListener('click', () => {
+            isLoggedIn = !isLoggedIn;
+            if (!isLoggedIn) userPoints = 0;
+            localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+            localStorage.setItem('userPoints', JSON.stringify(userPoints));
+            updateUserStatus();
+            alert(isLoggedIn ? `Welcome back! You have ${userPoints} points.` : 'You have been logged out.');
+        });
+
+        updateUserStatus();
+
+        // Search Functionality
+        const searchBtn = document.getElementById('search-btn');
+        const searchInput = document.getElementById('search-input');
+        const autocompleteSuggestions = document.getElementById('autocomplete-suggestions');
+
+        searchBtn.addEventListener('click', () => {
+            const isExpanded = searchInput.classList.contains('active');
+            searchInput.classList.toggle('active');
+            searchBtn.setAttribute('aria-expanded', !isExpanded);
+            if (!isExpanded) {
+                searchInput.focus();
+            } else {
+                searchInput.value = '';
+                autocompleteSuggestions.innerHTML = '';
+                autocompleteSuggestions.classList.remove('active');
+            }
+        });
+
+        const products = Array.from(document.querySelectorAll('.product-card')).map(card => ({
+            name: card.dataset.name,
+            category: card.dataset.category
+        }));
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim().toLowerCase();
+            autocompleteSuggestions.innerHTML = '';
+            if (!query) {
+                autocompleteSuggestions.classList.remove('active');
+                return;
+            }
+
+            const suggestions = products.filter(product =>
+                product.name.toLowerCase().includes(query)
+            ).slice(0, 5);
+
+            if (suggestions.length === 0) {
+                autocompleteSuggestions.classList.remove('active');
+                return;
+            }
+
+            suggestions.forEach((suggestion, index) => {
+                const div = document.createElement('div');
+                div.classList.add('suggestion-item');
+                div.setAttribute('role', 'option');
+                div.setAttribute('id', `suggestion-${index}`);
+                div.setAttribute('aria-selected', 'false');
+                const regex = new RegExp(`(${query})`, 'gi');
+                const highlightedName = suggestion.name.replace(regex, '<span class="highlight">$1</span>');
+                div.innerHTML = highlightedName;
+                div.addEventListener('click', () => {
+                    searchInput.value = suggestion.name;
+                    filterProducts(query, suggestion.category === 'Microcontroller' || suggestion.category === 'Sensor' || suggestion.category === 'Motor' ? 'components' : 'kits');
+                    autocompleteSuggestions.innerHTML = '';
+                    autocompleteSuggestions.classList.remove('active');
+                });
+                autocompleteSuggestions.appendChild(div);
+            });
+            autocompleteSuggestions.classList.add('active');
+        });
+
+        function filterProducts(query, sectionId) {
+            const grid = document.getElementById(`${sectionId}-grid`);
+            const items = Array.from(grid.querySelectorAll('.product-card'));
+            items.forEach(item => {
+                const matches = item.dataset.name.toLowerCase().includes(query);
+                item.style.display = matches ? 'block' : 'none';
+            });
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Filter and Sort Functionality
+        function setupFilterSort(sectionId, gridId) {
+            const categoryFilter = document.getElementById(`category-filter-${sectionId}`);
+            const sortSelect = document.getElementById(`sort-${sectionId}`);
+            const priceMin = document.getElementById(`price-min-${sectionId}`);
+            const priceMax = document.getElementById(`price-max-${sectionId}`);
+            const brandFilter = document.getElementById(`brand-filter-${sectionId}`);
+            const stockFilter = document.getElementById(`stock-filter-${sectionId}`);
+            const grid = document.getElementById(`${gridId}-grid`);
+
+            function applyFiltersAndSort() {
+                const category = categoryFilter.value;
+                const sort = sortSelect.value;
+                const minPrice = parseFloat(priceMin.value) || 0;
+                const maxPrice = parseFloat(priceMax.value) || Infinity;
+                const brand = brandFilter.value;
+                const stockStatus = stockFilter.value;
+
+                // Update visual feedback for category filter
+                categoryFilter.classList.remove('active');
+                if (category !== 'all') {
+                    categoryFilter.classList.add('active');
+                }
+
+                let items = Array.from(grid.querySelectorAll('.product-card'));
+
+                // Filter by category, price, brand, and stock
+                items = items.filter(item => {
+                    const itemCategory = item.dataset.category;
+                    const itemPrice = parseFloat(item.dataset.price);
+                    const itemBrand = item.dataset.brand;
+                    const itemStock = parseInt(item.dataset.stock);
+                    const matchesCategory = category === 'all' || itemCategory === category;
+                    const matchesPrice = itemPrice >= minPrice && itemPrice <= maxPrice;
+                    const matchesBrand = brand === 'all' || itemBrand === brand;
+                    let matchesStock = true;
+                    if (stockStatus === 'in-stock') matchesStock = itemStock > 0;
+                    if (stockStatus === 'low-stock') matchesStock = itemStock > 0 && itemStock <= 5;
+                    return matchesCategory && matchesPrice && matchesBrand && matchesStock;
+                });
+
+                // Sort
+                items.sort((a, b) => {
+                    const priceA = parseFloat(a.dataset.price);
+                    const priceB = parseFloat(b.dataset.price);
+                    const nameA = a.dataset.name.toLowerCase();
+                    const nameB = b.dataset.name.toLowerCase();
+                    const ratingA = parseFloat(a.dataset.rating);
+                    const ratingB = parseFloat(b.dataset.rating);
+
+                    if (sort === 'price-asc') return priceA - priceB;
+                    if (sort === 'price-desc') return priceB - priceA;
+                    if (sort === 'name-asc') return nameA.localeCompare(nameB);
+                    if (sort === 'name-desc') return nameB.localeCompare(nameA);
+                    if (sort === 'rating-desc') return ratingB - ratingA;
+                    return 0;
+                });
+
+                // Clear and repopulate grid
+                grid.innerHTML = '';
+                if (items.length === 0) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-gray-300">No products match your filters.</p>';
+                } else {
+                    items.forEach(item => grid.appendChild(item));
+                }
+
+                // Reattach event listeners to buttons in the grid
+                items.forEach(item => {
+                    item.querySelector('.view-details')?.addEventListener('click', openProductModal);
+                    item.querySelector('.quick-view')?.addEventListener('click', openProductModal);
+                    item.querySelector('.add-to-cart')?.addEventListener('click', addToCart);
+                    item.querySelector('.wishlist-btn')?.addEventListener('click', toggleWishlist);
+                    item.querySelector('.compare-btn')?.addEventListener('click', toggleCompare);
+                });
+            }
+
+            categoryFilter.addEventListener('change', applyFiltersAndSort);
+            sortSelect.addEventListener('change', applyFiltersAndSort);
+            priceMin.addEventListener('input', applyFiltersAndSort);
+            priceMax.addEventListener('input', applyFiltersAndSort);
+            brandFilter.addEventListener('change', applyFiltersAndSort);
+            stockFilter.addEventListener('change', applyFiltersAndSort);
+
+            applyFiltersAndSort();
+        }
+
+        setupFilterSort('components', 'components');
+        setupFilterSort('kits', 'kits');
+
+        // Cart Functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        let compareList = JSON.parse(localStorage.getItem('compare')) || [];
+        let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+        let reviews = JSON.parse(localStorage.getItem('reviews')) || {};
+
+        const cartBtn = document.getElementById('cart-btn');
+        const cartModal = document.getElementById('cart-modal');
+        const closeCartModal = document.getElementById('close-cart-modal');
+        const cartItems = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const cartTotal = document.getElementById('cart-total');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                const div = document.createElement('div');
+                div.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
+                div.innerHTML = `
+                    <span>${item.name} (x${item.quantity})</span>
+                    <div class="flex items-center space-x-2">
+                        <button class="decrease-quantity quantity-btn" data-index="${index}">-</button>
+                        <span>$${ (item.price * item.quantity).toFixed(2) }</span>
+                        <button class="increase-quantity quantity-btn" data-index="${index}">+</button>
+                        <button class="remove-from-cart text-red-500" data-index="${index}" aria-label="Remove ${item.name} from Cart">Remove</button>
+                    </div>
+                `;
+                cartItems.appendChild(div);
+            });
+            cartTotal.textContent = `Total: $${ total.toFixed(2) }`;
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function addToCart(e) {
+            const name = e.target.dataset.name;
+            const price = parseFloat(e.target.dataset.price);
+            const card = Array.from(document.querySelectorAll('.product-card')).find(c => c.dataset.name === name);
+            const stock = parseInt(card.dataset.stock);
+            if (stock === 0) {
+                alert('This product is out of stock.');
+                return;
+            }
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                if (existingItem.quantity + 1 > stock) {
+                    alert('Cannot add more items than available in stock.');
+                    return;
+                }
+                existingItem.quantity += 1;
+            } else {
+                if (1 > stock) {
+                    alert('Cannot add more items than available in stock.');
+                    return;
+                }
+                cart.push({ name, price, quantity: 1 });
+            }
+            if (isLoggedIn) {
+                userPoints += 10; // 10 points for adding to cart
+                localStorage.setItem('userPoints', JSON.stringify(userPoints));
+                alert(`Added to cart! You earned 10 points. Total points: ${userPoints}`);
+            }
+            updateCart();
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart')) {
+                addToCart(e);
+            }
+            if (e.target.classList.contains('remove-from-cart')) {
+                const index = e.target.dataset.index;
+                cart.splice(index, 1);
+                updateCart();
+            }
+            if (e.target.classList.contains('increase-quantity')) {
+                const index = e.target.dataset.index;
+                const card = Array.from(document.querySelectorAll('.product-card')).find(c => c.dataset.name === cart[index].name);
+                const stock = parseInt(card.dataset.stock);
+                if (cart[index].quantity + 1 > stock) {
+                    alert('Cannot add more items than available in stock.');
+                    return;
+                }
+                cart[index].quantity += 1;
+                updateCart();
+            }
+            if (e.target.classList.contains('decrease-quantity')) {
+                const index = e.target.dataset.index;
+                if (cart[index].quantity > 1) {
+                    cart[index].quantity -= 1;
+                } else {
+                    cart.splice(index, 1);
+                }
+                updateCart();
+            }
+        });
+
+        cartBtn.addEventListener('click', () => {
+            cartModal.classList.remove('hidden');
+            cartModal.focus();
+        });
+
+        closeCartModal.addEventListener('click', () => {
+            cartModal.classList.add('hidden');
+        });
+
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+            if (isLoggedIn) {
+                userPoints += 50; // 50 points for checkout
+                localStorage.setItem('userPoints', JSON.stringify(userPoints));
+                alert(`Checkout successful! You earned 50 points. Total points: ${userPoints}`);
+            } else {
+                alert('Checkout successful! Please log in to earn points.');
+            }
+            cart = [];
+            updateCart();
+            cartModal.classList.add('hidden');
+        });
+
+        // Wishlist Functionality
+        const wishlistBtn = document.getElementById('wishlist-btn');
+        const wishlistModal = document.getElementById('wishlist-modal');
+        const closeWishlistModal = document.getElementById('close-wishlist-modal');
+        const wishlistItems = document.getElementById('wishlist-items');
+        const wishlistCount = document.getElementById('wishlist-count');
+        const shareWishlistBtn = document.getElementById('share-wishlist');
+
+        function updateWishlist() {
+            wishlistItems.innerHTML = '';
+            wishlist.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
+                div.innerHTML = `
+                    <span>${item}</span>
+                    <div class="flex space-x-2">
+                        <button class="add-to-cart-from-wishlist bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded btn" data-name="${item}" aria-label="Add ${item} to Cart">Add to Cart</button>
+                        <button class="remove-from-wishlist text-red-500" data-index="${index}" aria-label="Remove ${item} from Wishlist">Remove</button>
+                    </div>
+                `;
+                wishlistItems.appendChild(div);
+            });
+            wishlistCount.textContent = wishlist.length;
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+
+            // Update wishlist buttons on product cards
+            document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                const name = btn.dataset.name;
+                if (wishlist.includes(name)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function toggleWishlist(e) {
+            const btn = e.target.closest('.wishlist-btn');
+            const name = btn.dataset.name;
+            if (wishlist.includes(name)) {
+                wishlist = wishlist.filter(item => item !== name);
+            } else {
+                wishlist.push(name);
+                if (isLoggedIn) {
+                    userPoints += 5; // 5 points for adding to wishlist
+                    localStorage.setItem('userPoints', JSON.stringify(userPoints));
+                    alert(`Added to wishlist! You earned 5 points. Total points: ${userPoints}`);
+                }
+            }
+            updateWishlist();
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.wishlist-btn')) {
+                toggleWishlist(e);
+            }
+            if (e.target.classList.contains('remove-from-wishlist')) {
+                const index = e.target.dataset.index;
+                wishlist.splice(index, 1);
+                updateWishlist();
+            }
+            if (e.target.classList.contains('add-to-cart-from-wishlist')) {
+                const name = e.target.dataset.name;
+                const card = Array.from(document.querySelectorAll('.product-card')).find(c => c.dataset.name === name);
+                const price = parseFloat(card.dataset.price);
+                const stock = parseInt(card.dataset.stock);
+                if (stock === 0) {
+                    alert('This product is out of stock.');
+                    return;
+                }
+                const existingItem = cart.find(item => item.name === name);
+                if (existingItem) {
+                    if (existingItem.quantity + 1 > stock) {
+                        alert('Cannot add more items than available in stock.');
+                        return;
+                    }
+                    existingItem.quantity += 1;
+                } else {
+                    if (1 > stock) {
+                        alert('Cannot add more items than available in stock.');
+                        return;
+                    }
+                    cart.push({ name, price, quantity: 1 });
+                }
+                if (isLoggedIn) {
+                    userPoints += 10; // 10 points for adding to cart
+                    localStorage.setItem('userPoints', JSON.stringify(userPoints));
+                    alert(`Added to cart! You earned 10 points. Total points: ${userPoints}`);
+                }
+                updateCart();
+            }
+        });
+
+        wishlistBtn.addEventListener('click', () => {
+            wishlistModal.classList.remove('hidden');
+            wishlistModal.focus();
+        });
+
+        closeWishlistModal.addEventListener('click', () => {
+            wishlistModal.classList.add('hidden');
+        });
+
+        shareWishlistBtn.addEventListener('click', () => {
+            if (wishlist.length === 0) {
+                alert('Your wishlist is empty.');
+                return;
+            }
+            const wishlistText = wishlist.join(', ');
+            const shareUrl = `${window.location.origin}/wishlist?items=${encodeURIComponent(wishlistText)}`;
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('Wishlist link copied to clipboard!');
+            });
+        });
+
+        // Product Modal and Reviews
+        const productModal = document.getElementById('product-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalName = document.getElementById('modal-name');
+        const modalDescription = document.getElementById('modal-description');
+        const modalPrice = document.getElementById('modal-price');
+        const modalBrand = document.getElementById('modal-brand');
+        const modalStock = document.getElementById('modal-stock');
+        const modalRating = document.getElementById('modal-rating');
+        const modalRatingValue = document.getElementById('modal-rating-value');
+        const modalQuantity = document.getElementById('modal-quantity');
+        const increaseQuantity = document.getElementById('increase-quantity');
+        const decreaseQuantity = document.getElementById('decrease-quantity');
+        const modalAddToCart = document.getElementById('modal-add-to-cart');
+        const reviewsList = document.getElementById('reviews-list');
+        const starRating = document.getElementById('star-rating');
+        const reviewText = document.getElementById('review-text');
+        const submitReview = document.getElementById('submit-review');
+
+        let currentQuantity = 1;
+        let currentRating = 0;
+        let currentProductName = '';
+
+        starRating.addEventListener('click', (e) => {
+            if (e.target.classList.contains('star')) {
+                currentRating = parseInt(e.target.dataset.value);
+                starRating.querySelectorAll('.star').forEach(star => {
+                    star.style.color = parseInt(star.dataset.value) <= currentRating ? '#fbbf24' : '#e2e8f0';
+                });
+            }
+        });
+
+        submitReview.addEventListener('click', () => {
+            if (!isLoggedIn) {
+                alert('Please log in to submit a review.');
+                return;
+            }
+            if (currentRating === 0) {
+                alert('Please select a rating.');
+                return;
+            }
+            const text = reviewText.value.trim();
+            if (!text) {
+                alert('Please write a review.');
+                return;
+            }
+            if (!reviews[currentProductName]) reviews[currentProductName] = [];
+            reviews[currentProductName].push({ rating: currentRating, text });
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+            userPoints += 20; // 20 points for submitting a review
+            localStorage.setItem('userPoints', JSON.stringify(userPoints));
+            alert(`Review submitted! You earned 20 points. Total points: ${userPoints}`);
+            updateReviews();
+            reviewText.value = '';
+            currentRating = 0;
+            starRating.querySelectorAll('.star').forEach(star => star.style.color = '#e2e8f0');
+        });
+
+        function updateReviews() {
+            reviewsList.innerHTML = '';
+            if (reviews[currentProductName] && reviews[currentProductName].length > 0) {
+                reviews[currentProductName].forEach(review => {
+                    const div = document.createElement('div');
+                    div.classList.add('mb-2');
+                    div.innerHTML = `
+                        <div class="flex items-center mb-1">
+                            <span class="rating-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+                            <span class="ml-2 text-sm">(${review.rating})</span>
+                        </div>
+                        <p class="text-gray-300">${review.text}</p>
+                    `;
+                    reviewsList.appendChild(div);
+                });
+            } else {
+                reviewsList.innerHTML = '<p class="text-gray-300">No reviews yet.</p>';
+            }
+        }
+
+        function openProductModal(e) {
+            const card = e.target.closest('.product-card');
+            modalImage.src = card.dataset.image;
+            modalImage.alt = `Image of ${card.dataset.name}`;
+            modalName.textContent = card.dataset.name;
+            modalDescription.textContent = card.dataset.description;
+            modalPrice.textContent = card.dataset.originalPrice ? `$${card.dataset.price} (Was $${card.dataset.originalPrice})` : `$${card.dataset.price}`;
+            modalBrand.textContent = card.dataset.brand;
+            const stock = parseInt(card.dataset.stock);
+            modalStock.textContent = stock === 0 ? 'Out of Stock' : `In Stock: ${stock}`;
+            modalStock.classList.toggle('stock-low', stock > 0 && stock <= 5);
+            modalStock.classList.toggle('stock-out', stock === 0);
+            const rating = parseFloat(card.dataset.rating);
+            modalRating.innerHTML = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+            modalRatingValue.textContent = `(${rating})`;
+            modalAddToCart.dataset.name = card.dataset.name;
+            modalAddToCart.dataset.price = card.dataset.price;
+            currentQuantity = 1;
+            modalQuantity.textContent = currentQuantity;
+            currentProductName = card.dataset.name;
+            updateReviews();
+            productModal.classList.remove('hidden');
+            productModal.focus();
+
+            // Add to recently viewed
+            const product = { name: card.dataset.name, price: card.dataset.price, description: card.dataset.description, image: card.dataset.image, category: card.dataset.category, brand: card.dataset.brand, stock: card.dataset.stock, rating: card.dataset.rating };
+            recentlyViewed = recentlyViewed.filter(item => item.name !== product.name);
+            recentlyViewed.unshift(product);
+            if (recentlyViewed.length > 5) recentlyViewed.pop();
+            updateRecentlyViewed();
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('view-details') || e.target.classList.contains('quick-view')) {
+                openProductModal(e);
+            }
+        });
+
+        increaseQuantity.addEventListener('click', () => {
+            const card = Array.from(document.querySelectorAll('.product-card')).find(c => c.dataset.name === modalAddToCart.dataset.name);
+            const stock = parseInt(card.dataset.stock);
+            if (currentQuantity + 1 > stock) {
+                alert('Cannot add more items than available in stock.');
+                return;
+            }
+            currentQuantity += 1;
+            modalQuantity.textContent = currentQuantity;
+        });
+
+        decreaseQuantity.addEventListener('click', () => {
+            if (currentQuantity > 1) {
+                currentQuantity -= 1;
+                modalQuantity.textContent = currentQuantity;
+            }
+        });
+
+        modalAddToCart.addEventListener('click', () => {
+            const name = modalAddToCart.dataset.name;
+            const price = parseFloat(modalAddToCart.dataset.price);
+            const card = Array.from(document.querySelectorAll('.product-card')).find(c => c.dataset.name === name);
+            const stock = parseInt(card.dataset.stock);
+            if (stock === 0) {
+                alert('This product is out of stock.');
+                return;
+            }
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                if (existingItem.quantity + currentQuantity > stock) {
+                    alert('Cannot add more items than available in stock.');
+                    return;
+                }
+                existingItem.quantity += currentQuantity;
+            } else {
+                if (currentQuantity > stock) {
+                    alert('Cannot add more items than available in stock.');
+                    return;
+                }
+                cart.push({ name, price, quantity: currentQuantity });
+            }
+            if (isLoggedIn) {
+                userPoints += 10 * currentQuantity; // 10 points per item added
+                localStorage.setItem('userPoints', JSON.stringify(userPoints));
+                alert(`Added to cart! You earned ${10 * currentQuantity} points. Total points: ${userPoints}`);
+            }
+            updateCart();
+            productModal.classList.add('hidden');
+        });
+
+        closeModal.addEventListener('click', () => {
+            productModal.classList.add('hidden');
+        });
+
+        // Recently Viewed Section
+        const recentlyViewedSection = document.getElementById('recently-viewed');
+        const recentlyViewedGrid = document.getElementById('recently-viewed-grid');
+
+        function updateRecentlyViewed() {
+            if (recentlyViewed.length === 0) {
+                recentlyViewedSection.classList.add('hidden');
+                return;
+            }
+            recentlyViewedSection.classList.remove('hidden');
+            recentlyViewedGrid.innerHTML = '';
+            recentlyViewed.forEach(product => {
+                const card = document.createElement('div');
+                card.classList.add('product-card', 'bg-gray-700', 'p-6', 'rounded-lg', 'shadow-lg', 'animate-card');
+                card.dataset.name = product.name;
+                card.dataset.price = product.price;
+                card.dataset.description = product.description;
+                card.dataset.image = product.image;
+                card.dataset.category = product.category;
+                card.dataset.brand = product.brand;
+                card.dataset.stock = product.stock;
+                card.dataset.rating = product.rating;
+                card.innerHTML = `
+                    <div class="image-wrapper w-full">
+                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover rounded-md" loading="lazy">
+                        <button class="quick-view">Quick View</button>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-4 product-name">${product.name}</h3>
+                    <p class="text-gray-300 mb-2 product-description">${product.description}</p>
+                    <p class="text-sm text-gray-400">Brand: ${product.brand}</p>
+                    <p class="text-sm ${product.stock > 0 && product.stock <= 5 ? 'stock-low' : product.stock === 0 ? 'stock-out' : ''}">${product.stock === 0 ? 'Out of Stock' : 'In Stock: ' + product.stock}</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">${'★'.repeat(Math.round(product.rating))}${'☆'.repeat(5 - Math.round(product.rating))}</span>
+                        <span class="ml-2 text-sm">(${product.rating})</span>
+                    </div>
+                    <p class="text-lg font-bold product-price">$${product.price}</p>
+                    <div class="flex space-x-2 mt-4">
+                        <button class="view-details bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full btn" aria-label="View Details for ${product.name}">View Details</button>
+                        <button class="add-to-cart bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full btn" data-name="${product.name}" data-price="${product.price}" aria-label="Add ${product.name} to Cart" ${product.stock === 0 ? 'disabled' : ''}>${product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}</button>
+                        <button class="wishlist-btn" data-name="${product.name}" aria-label="Add ${product.name} to Wishlist">
+                            <svg class="heart-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="compare-btn bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded btn" data-name="${product.name}" aria-label="Compare ${product.name}">Compare</button>
+                    </div>
+                `;
+                recentlyViewedGrid.appendChild(card);
+            });
+            localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+            updateWishlist(); // Update wishlist button states
+        }
+
+        // Compare Functionality
+        const compareModal = document.getElementById('compare-modal');
+        const closeCompareModal = document.getElementById('close-compare-modal');
+        const compareTable = document.getElementById('compare-table');
+
+        function updateCompare() {
+            compareTable.innerHTML = '';
+            if (compareList.length === 0) {
+                compareModal.classList.add('hidden');
+                return;
+            }
+            compareList.forEach((name, index) => {
+                const card = Array.from(document.querySelectorAll('.product-card')).find(c => c.dataset.name === name);
+                if (!card) return;
+                const div = document.createElement('div');
+                div.classList.add('bg-gray-700', 'p-4', 'rounded-lg', 'min-w-[200px]');
+                div.innerHTML = `
+                    <div class="image-wrapper w-full mb-2">
+                        <img src="${card.dataset.image}" alt="${name}" class="w-full h-full object-cover rounded-md">
+                    </div>
+                    <h4 class="text-lg font-bold">${name}</h4>
+                    <p class="text-gray-300 mb-2">${card.dataset.description}</p>
+                    <p class="text-sm text-gray-400 mb-2">Brand: ${card.dataset.brand}</p>
+                    <p class="text-sm mb-2 ${parseInt(card.dataset.stock) > 0 && parseInt(card.dataset.stock) <= 5 ? 'stock-low' : parseInt(card.dataset.stock) === 0 ? 'stock-out' : ''}">${parseInt(card.dataset.stock) === 0 ? 'Out of Stock' : 'In Stock: ' + card.dataset.stock}</p>
+                    <div class="flex items-center mb-2">
+                        <span class="rating-stars">${'★'.repeat(Math.round(card.dataset.rating))}${'☆'.repeat(5 - Math.round(card.dataset.rating))}</span>
+                        <span class="ml-2 text-sm">(${card.dataset.rating})</span>
+                    </div>
+                    <p class="text-lg font-bold mb-2">$${card.dataset.price}</p>
+                    <p class="text-gray-300">Category: ${card.dataset.category}</p>
+                    <button class="remove-from-compare text-red-500 mt-2" data-index="${index}" aria-label="Remove ${name} from Comparison">Remove</button>
+                `;
+                compareTable.appendChild(div);
+            });
+            localStorage.setItem('compare', JSON.stringify(compareList));
+
+            // Update compare buttons on product cards
+            document.querySelectorAll('.compare-btn').forEach(btn => {
+                const name = btn.dataset.name;
+                if (compareList.includes(name)) {
+                    btn.classList.add('active');
+                    btn.textContent = 'Remove from Compare';
+                } else {
+                    btn.classList.remove('active');
+                    btn.textContent = 'Compare';
+                }
+            });
+        }
+
+        function toggleCompare(e) {
+            const name = e.target.dataset.name;
+            if (compareList.includes(name)) {
+                compareList = compareList.filter(item => item !== name);
+            } else {
+                if (compareList.length >= 3) {
+                    alert('You can compare up to 3 products at a time.');
+                    return;
+                }
+                compareList.push(name);
+            }
+            updateCompare();
+            if (compareList.length > 0) {
+                compareModal.classList.remove('hidden');
+                compareModal.focus();
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('compare-btn')) {
+                toggleCompare(e);
+            }
+            if (e.target.classList.contains('remove-from-compare')) {
+                const index = e.target.dataset.index;
+                compareList.splice(index, 1);
+                updateCompare();
+                if (compareList.length === 0) {
+                    compareModal.classList.add('hidden');
+                }
+            }
+        });
+
+        closeCompareModal.addEventListener('click', () => {
+            compareModal.classList.add('hidden');
+        });
+
+        // Video Modal
+        const videoModal = document.getElementById('video-modal');
+        const closeVideoModal = document.getElementById('close-video-modal');
+        const videoTitle = document.getElementById('video-title');
+        const videoPlaceholder = document.getElementById('video-placeholder');
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('watch-video')) {
+                const video = e.target.dataset.video;
+                videoTitle.textContent = video;
+                videoPlaceholder.textContent = video;
+                videoModal.classList.remove('hidden');
+                videoModal.focus();
+            }
+        });
+
+        closeVideoModal.addEventListener('click', () => {
+            videoModal.classList.add('hidden');
+        });
+
+        // AI Chatbot Functionality
+        const aiChatIcon = document.getElementById('ai-chat-icon');
+        const aiChatWindow = document.getElementById('ai-chat-window');
+        const closeAiChat = document.getElementById('close-ai-chat');
+        const aiChatMessages = document.getElementById('ai-chat-messages');
+        const aiChatForm = document.getElementById('ai-chat-form');
+        const aiChatInput = document.getElementById('ai-chat-input');
+
+        aiChatIcon.addEventListener('click', () => {
+            aiChatWindow.classList.remove('hidden');
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+            aiChatInput.focus();
+        });
+
+        closeAiChat.addEventListener('click', () => {
+            aiChatWindow.classList.add('hidden');
+        });
+
+        const responses = {
+            greeting: ['hi', 'hello', 'hey'],
+            goodbye: ['bye', 'goodbye', 'see you'],
+            thanks: ['thank you', 'thanks'],
+            product: ['product', 'item', 'buy', 'purchase'],
+            microcontroller: ['microcontroller', 'arduino', 'raspberry'],
+            sensor: ['sensor', 'ultrasonic', 'temperature'],
+            motor: ['motor', 'dc motor', 'servo'],
+            kit: ['kit', 'robotics', 'iot', 'automation'],
+            shipping: ['shipping', 'delivery'],
+            returns: ['return', 'refund'],
+            cart: ['cart', 'basket'],
+            wishlist: ['wishlist', 'save', 'favorite'],
+            help: ['help', 'assist', 'support'],
+            points: ['points', 'rewards'],
+            deals: ['deals', 'discount', 'offer']
+        };
+
+        const replyTemplates = {
+            greeting: 'Hello! How can I assist you today?',
+            goodbye: 'Goodbye! Feel free to chat again if you need help.',
+            thanks: 'You’re welcome! Happy to help.',
+            product: 'Looking for a product? You can browse components like microcontrollers, sensors, or motors, or check out our project kits!',
+            microcontroller: 'We have great microcontrollers like the Arduino Uno ($25) and Raspberry Pi 4 ($35). Check them out in the Components section!',
+            sensor: 'Our sensors include the Ultrasonic Sensor ($5) and Temperature Sensor ($3). You can find them in the Components section.',
+            motor: 'We offer motors like the DC Motor ($8) and Servo Motor ($10). See them in the Components section!',
+            kit: 'Our project kits include Robotics, IoT, and Automation categories. Popular ones are the Robotics Starter Kit ($50) and Smart Home IoT Kit ($60). Browse them in the Project Kits section!',
+            shipping: 'We offer free shipping on orders over $50! Delivery typically takes 3-5 business days.',
+            returns: 'You can return products within 30 days of purchase. Please check our About Us section for more details.',
+            cart: 'You can view your cart by clicking the cart icon in the top-right corner. Want to add something to it?',
+            wishlist: 'You can see your wishlist by clicking the heart icon in the top-right corner. Want to add a product to your wishlist?',
+            help: 'I’m here to help! You can ask about products, shipping, returns, or anything else.',
+            points: `You have ${userPoints} points. You can earn points by adding items to your cart (10 points), wishlist (5 points), submitting reviews (20 points), or checking out (50 points).`,
+            deals: 'Check out our Deals of the Day section for exclusive discounts! Currently, we have 20% off on the Arduino Uno and Smart Home IoT Kit.',
+            default: 'I’m not sure I understood that. Can you rephrase, or ask about products, shipping, or returns?'
+        };
+
+        aiChatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userMessage = aiChatInput.value.trim().toLowerCase();
+            if (!userMessage) return;
+
+            aiChatMessages.innerHTML += `<p class="text-right text-blue-400">${userMessage}</p>`;
+            aiChatInput.value = '';
+
+            let reply = replyTemplates.default;
+            for (const [key, keywords] of Object.entries(responses)) {
+                if (keywords.some(keyword => userMessage.includes(keyword))) {
+                    reply = replyTemplates[key];
+                    break;
+                }
+            }
+
+            setTimeout(() => {
+                aiChatMessages.innerHTML += `<p class="text-gray-300">${reply}</p>`;
+                aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+            }, 500);
+        });
+
+        // Newsletter Signup
+        const newsletterForm = document.getElementById('newsletter-form');
+        const newsletterEmail = document.getElementById('newsletter-email');
+        const newsletterMessage = document.getElementById('newsletter-message');
+
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = newsletterEmail.value.trim();
+            if (!email) return;
+            newsletterMessage.classList.remove('hidden');
+            newsletterEmail.value = '';
+            setTimeout(() => {
+                newsletterMessage.classList.add('hidden');
+            }, 3000);
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Modal Focus Trap
+        function trapFocus(modal) {
+            const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            modal.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                }
+                if (e.key === 'Escape') {
+                    modal.classList.add('hidden');
+                }
+            });
+        }
+
+        trapFocus(productModal);
+        trapFocus(cartModal);
+        trapFocus(wishlistModal);
+        trapFocus(compareModal);
+        trapFocus(videoModal);
+        trapFocus(aiChatWindow);
+
+        // Initialize Cart, Wishlist, Compare, and Recently Viewed
+        updateCart();
+        updateWishlist();
+        updateCompare();
+        updateRecentlyViewed();
+    </script>
+</body>
+</html>
+</xaiArtifact>
+
+
